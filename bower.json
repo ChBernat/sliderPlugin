@@ -1,0 +1,31 @@
+{
+  "name": "js-slider",
+  "version": "1.0.0",
+  "authors": [
+    "KBernat <bernat.christopher@gmail.com>"
+  ],
+  "description": "A slider written in pure js (ecmascript 5).",
+  "main": "slider.js",
+  "keywords": [
+    "html",
+    "html5",
+    "css",
+    "css3",
+    "javascript",
+    "purejs",
+    "slider",
+    "script",
+    "plugin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "susy": "~2.2.5"
+  }
+}

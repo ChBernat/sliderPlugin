@@ -1,0 +1,89 @@
+@import "_normalize.scss";
+@mixin makeArrow($color, $type, $width){
+					border-top: $width $type $color;
+					border-left: $width $type $color;
+}
+@mixin compTransform($deg){
+	 	-ms-transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+    transform: rotate($deg);
+}
+ #slider {
+	 position: relative;
+	 .slides {
+		 li {
+			 display: none;
+			 &.active {
+				 display: block;
+			 }
+		 }
+		 img {
+			 max-width: 100%;
+		 }
+	 }
+	.slider-dots {
+		position: absolute;
+		bottom: 30px;
+		left: 0;
+		right: 0;
+		width: 100%;
+		text-align: center;
+		li {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 10px;
+			a {
+				display: block;
+				width: 20px;
+				height: 20px;
+				background-color: #fff;
+				border-radius: 50%;
+			}
+			&:first-child {
+				margin-left: 0;
+			}
+			&.active a {
+				background-color: #c00;
+			}
+		}
+	}
+	.slider-arrows{
+		position: absolute;
+		bottom: 5em;
+		width: 100%;
+			.prev-arrow, .next-arrow{
+				position: absolute;
+				a{
+					height: 40px;
+					width: 40px;
+					display: block;
+					@include makeArrow(5px, solid, crimson);
+					border-radius: 20%;
+					@include compTransform(45deg);
+					opacity: 0.6;
+					-webkit-transition: opacity 0.3 linear; /* Safari */
+    			transition: opacity 0.3 linear;
+    			&:hover{
+						opacity: 1;
+    			}
+				}
+			}
+			.prev-arrow{
+				left: 2em;
+				a{
+					@include compTransform(-45deg);
+				}
+			}
+			.next-arrow{
+				right: 2em;
+				a{
+					@include compTransform(135deg);
+				}
+			}
+	}
+	.slider-progressbar{
+		height: 10px;
+		width: 0;
+		background-color: maroon;
+	} 
+}
