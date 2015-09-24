@@ -1,4 +1,4 @@
-# sliderPlugin
+# <a href='http://chbernat.github.io/sliderPlugin'>sliderPlugin</a>
 A slider that has been written in pure ES5.<br>
 
 First, you have to install node.js, npm, grunt and bower.</solid><br>
