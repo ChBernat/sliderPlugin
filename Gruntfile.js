@@ -34,8 +34,7 @@ module.exports = function(grunt) {
         tasks: ['sass']
       },
       options: {
-        // Sets livereload to true for livereload to work 
-        // (livereload is not covered in this article)
+        // Set livereload to true for livereload to work
         livereload: true,
         spawn: false
       }

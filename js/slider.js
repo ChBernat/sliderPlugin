@@ -1,17 +1,8 @@
 (function(window, document, undefined){ 
 	var slider = {
-		init : function(){
-			slider.createDots( document.querySelectorAll('#slider .slide') );
-			slider.setConfig()
-			slider.setState(slider.config.slide);
-			slider.addClickHandler( slider.config.slides );
-			slider.addOverHandler( slider.config.slides );
-			slider.addOutHandler( slider.config.slides );
-			slider.progressBar( slider.config.slides );
-		},
 		setConfig : function(){
 			slider.config = {
-				sliderInterval : null,
+				sliderAnim : null,
 				intervalLength : 30,
 				progressCounter : 0,
 				slides : document.querySelectorAll( '#slider .slide' ),
@@ -22,6 +13,17 @@
 				}
 			}
 	},
+		init : function(){
+			slider.createDots( document.querySelectorAll('#slider .slide') );
+			slider.setConfig()
+			slider.setState(slider.config.slide);
+			slider.addOverHandler( slider.config.slides );
+			slider.addOutHandler( slider.config.slides );
+			slider.addClickHandler( slider.config.slides );
+			slider.createAnimFrame();
+			slider.animate( slider.config.slides );
+		},
+	/* core functions */
 		createDots : function(slides) {
 			var i;
 			var dots = document.querySelector( '.slider-dots' );
@@ -45,6 +47,12 @@
 									slider.config.activeDot.nextElementSibling);
 				}
 		},
+		changeSlide : function(slide, dot){
+			slider.setActive(slide, dot);
+			slider.removeActive();
+			slider.resetProgress(slider.config.slides);
+		},
+		/* event handlers */
 		addClickHandler : function( slides ){
 			document.querySelector(".container").addEventListener('click', function(e){
 				e.preventDefault();
@@ -67,26 +75,15 @@
 		addOverHandler : function ( slides ) {
 			document.querySelector('.slides').
 			addEventListener('mouseover', function(){
-				clearInterval(slider.config.sliderInterval);
+				clearTimeout(slider.config.sliderAnim);
 			}, true)},
 		addOutHandler : function(slides){
 			document.querySelector('.slides').
 			addEventListener('mouseout', function(){
-				console.log(00)
-				slider.progressBar(slides);
-			}, true)
+				slider.animate(slides);
+			}, true);
 		},
-		progressBar : function( slides ){
-			slider.config.sliderInterval = setInterval( function(){
-				if( slider.config.progressCounter === 100 ){
-					slider.setState( slides );
-				} else {
-					++slider.config.progressCounter;
-					document.querySelector( '.slider-progressbar' ).style.width = 
-											slider.config.progressCounter + '%';
-				}
-			}, slider.config.intervalLength );
-		},
+		/* arrow helper function */
 		checkArrows : function( el ){
 			if(el.classList.contains('prev-arrow')){
 				if(slider.config.activeSlide.previousElementSibling){
@@ -107,17 +104,55 @@
 			}
 			return [undefined];
 		},
+
+		/* animation functions */
+		animate : function(slides){
+			slider.config.sliderAnim
+					 = setTimeout(function(){
+					 	window.requestAnimationFrame(slider.animate);
+					 	slider.progressBar(slides);
+					 }, 30)
+		},
+		createAnimFrame : function(){
+			var lastTime = 0;
+	    var vendors = ['webkit', 'moz'];
+	    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+	        window.cancelAnimationFrame =
+	          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	    };
+
+	    if (!window.requestAnimationFrame)
+	        window.requestAnimationFrame = function(callback, element) {
+	            var currTime = new Date().getTime();
+	            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+	            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+	              timeToCall);
+	            lastTime = currTime + timeToCall;
+	            return id;
+	        };
+
+	    if (!window.cancelAnimationFrame)
+	        window.cancelAnimationFrame = function(id) {
+	            clearTimeout(id);
+	        };
+		},
+		/* progressbar functions */
+		progressBar : function( slides ){
+				if( slider.config.progressCounter === 100 ){
+					slider.setState( slides );
+				} else {
+					++slider.config.progressCounter;
+					document.querySelector( '.slider-progressbar' ).style.width = 
+											slider.config.progressCounter + '%';
+				}
+		},
 		resetProgress : function( slides ){
-			clearInterval(slider.config.sliderInterval);
+			clearTimeout(slider.config.sliderAnim);
 			slider.config.progressCounter = 0;
 			slider.progressBar( slides );
 		},
-
-		changeSlide : function(slide, dot){
-			slider.setActive(slide, dot);
-			slider.removeActive();
-			slider.resetProgress(slider.config.slides);
-		},
+		/* helper functions for setting active state */
 		setActive : function(slide, dot){
 			slide.classList.add('active');
 			dot.classList.add('active');
