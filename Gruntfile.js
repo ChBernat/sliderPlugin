@@ -23,6 +23,13 @@ module.exports = function(grunt) {
         imagePath: "../",
       }
     },
+    uglify: {
+      my_target: {
+        files: {
+          'js/slider.min.js': ['src/slider.js']
+        }
+      }
+    },
 
     // Grunt-contrib-watch
     watch: {
@@ -47,6 +54,7 @@ module.exports = function(grunt) {
   // Default task(s).
   // ...
 	grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
  	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('default', ['sass', 'watch']);
 

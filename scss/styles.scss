@@ -1,10 +1,10 @@
 @import "_normalize.scss";
 @mixin makeArrow($color, $type, $width){
-					border-top: $width $type $color;
-					border-left: $width $type $color;
+		border-top: $width $type $color;
+		border-left: $width $type $color;
 }
 @mixin compTransform($deg){
-	 	-ms-transform: rotate($deg);
+	-ms-transform: rotate($deg);
     -webkit-transform: rotate($deg);
     transform: rotate($deg);
 }
